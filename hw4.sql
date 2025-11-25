@@ -211,3 +211,19 @@ group by developer, publisher
 order by count_app desc;
 
 
+
+
+
+
+with only_first_instance as (
+    select s.appid,
+           s.year_of_release
+    from steam2 s
+    where year_of_release is not null
+),
+     distinct_instance as (
+         select distinct * from only_first_instance
+     )
+select year_of_release, count(*) as count_release
+from distinct_instance
+group by year_of_release;
